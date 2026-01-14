@@ -391,9 +391,16 @@ const App = {
 
     loadGapi() {
         gapi.load('client', async () => {
-            console.log('GAPI loaded');
-            this.isGapiLoaded = true;
-            // if we had an API key we could init here, but we wait for user action or auth
+            try {
+                await gapi.client.init({
+                    discoveryDocs: this.config.discoveryDocs,
+                });
+                this.isGapiLoaded = true;
+                console.log('GAPI Client Initialized (Discovery Docs Loaded)');
+            } catch (err) {
+                console.error('Error initializing GAPI client:', err);
+                alert('GAPI 初始化失敗，請檢查網路連線');
+            }
         });
     },
 
