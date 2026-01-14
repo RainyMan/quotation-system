@@ -61,6 +61,7 @@ const App = {
             // Buttons
             btnAddItem: document.getElementById('btn-add-item'),
             btnSave: document.getElementById('btn-save'),
+            btnSync: document.getElementById('btn-sync'), // New
             btnSettings: document.getElementById('btn-settings'),
             btnCloseSettings: document.querySelector('.close-modal'),
             btnSaveConfig: document.getElementById('btn-save-config'),
@@ -99,6 +100,7 @@ const App = {
     bindEvents() {
         this.dom.btnAddItem.addEventListener('click', () => this.addItemRow());
         this.dom.btnSave.addEventListener('click', () => this.saveToSheet());
+        this.dom.btnSync.addEventListener('click', () => this.fetchSheetData()); // New
         this.dom.btnSettings.addEventListener('click', () => this.dom.modal.classList.remove('hidden'));
         this.dom.btnCloseSettings.addEventListener('click', () => this.dom.modal.classList.add('hidden'));
         this.dom.btnSaveConfig.addEventListener('click', () => this.saveConfig());
@@ -477,6 +479,16 @@ const App = {
         }
     },
 
+    convertDriveLink(url) {
+        if (!url) return '';
+        // Extract ID from: https://drive.google.com/file/d/ID/view...
+        const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+            return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        return url;
+    },
+
     populateVendors(rows) {
         if (!rows || rows.length === 0) return;
         this.dom.vendorSelect.innerHTML = '<option value="">-- 請選擇廠商 --</option>';
@@ -490,7 +502,7 @@ const App = {
             fax: r[4],
             address: r[5],
             email: r[6],
-            stamp: r[7]
+            stamp: this.convertDriveLink(r[7]) // Convert URL
         }));
 
         this.data.vendors.forEach((v, index) => {
@@ -505,13 +517,15 @@ const App = {
         if (!rows || rows.length === 0) return;
         const datalist = document.getElementById('customer-list');
         datalist.innerHTML = '';
+        this.data.customers = []; // Init cache
 
         rows.forEach(r => {
+            const name = r[0];
+            this.data.customers.push(name);
             const opt = document.createElement('option');
-            opt.value = r[0]; // Name
+            opt.value = name;
             datalist.appendChild(opt);
         });
-        // We could also cache full customer details if needed
     },
 
     async ensureGapiClient() {
