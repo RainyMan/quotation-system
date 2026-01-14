@@ -1,0 +1,136 @@
+/* Theme: Elegant (Luxury) */
+
+:root {
+    --gold: #c5a059;
+    --black: #1a1a1a;
+    --gray: #f9f9f9;
+    --font-main: 'Noto Serif TC', serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: #f0f0f0;
+    color: var(--black);
+}
+
+.control-panel {
+    background: #fff;
+    border-bottom: 3px solid var(--gold);
+}
+
+.page-container {
+    background: #fff;
+}
+
+/* Header */
+.quotation-header {
+    border-bottom: 1px solid var(--gold);
+    text-align: center;
+}
+
+input.form-title {
+    font-family: var(--font-main);
+    color: var(--gold);
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.field-row label {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.editable-input {
+    border-bottom: 1px solid #eee;
+    font-family: var(--font-main);
+}
+
+.editable-input:focus {
+    border-bottom: 1px solid var(--gold);
+}
+
+/* Table */
+.item-table th {
+    background: var(--black);
+    color: var(--gold);
+    font-weight: 400;
+    letter-spacing: 2px;
+    border: 1px solid var(--black);
+    padding: 12px;
+}
+
+.item-table td {
+    border: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 12px;
+}
+
+.item-table {
+    margin-top: 20px;
+    border: 1px solid #eee;
+}
+
+/* Summary */
+.summary-section {
+    margin-top: 30px;
+    border-top: 1px solid var(--gold);
+    padding-top: 20px;
+}
+
+.total-row {
+    font-size: 20px;
+    color: var(--gold);
+    border-top: none;
+}
+
+.label {
+    font-style: italic;
+    color: #666;
+}
+
+/* Notes & Vendor */
+.notes-section,
+.vendor-section {
+    border: 1px solid #eee;
+    background: #fafafa;
+}
+
+.vendor-section {
+    border-left: 5px solid var(--gold);
+}
+
+/* Photos */
+.photo-header {
+    border-bottom: 1px solid var(--gold);
+    color: var(--gold);
+}
+
+.photo-card {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Print */
+@media print {
+    .item-table th {
+        background-color: #eee;
+        color: #000;
+        border: 1px solid #000;
+    }
+
+    .quotation-header {
+        border-bottom: 1px solid #000;
+    }
+
+    input.form-title {
+        color: #000;
+    }
+
+    .vendor-section {
+        border-left: 5px solid #000;
+    }
+}

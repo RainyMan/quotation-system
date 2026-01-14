@@ -1,0 +1,463 @@
+/* --- Variables (from Theme Classic) --- */
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --bg-color: #f4f6f9;
+    --paper-bg: #fff;
+    --border-color: #ddd;
+    --text-color: #333;
+    --font-main: 'Noto Sans TC', sans-serif;
+}
+
+/* --- Base Layout & Resets (from Base) --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* --- Control Panel (No Print) --- */
+.control-panel {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 2rem;
+    padding: 1rem 2rem;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.panel-toolbar {
+    display: flex;
+    gap: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 12px;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: #fff;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: #fff;
+}
+
+.btn-outline {
+    border: 1px solid #3498db;
+    color: #3498db;
+    background: transparent;
+}
+
+/* --- A4 Page Simulation --- */
+.page-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    position: relative;
+    background: var(--paper-bg);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Form Structure & Styles --- */
+.quotation-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #000;
+}
+
+.header-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-left,
+.col-right {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.field-row {
+    display: flex;
+    align-items: baseline;
+}
+
+.field-row label {
+    min-width: 80px;
+    font-weight: 500;
+}
+
+.editable-input {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 2px 5px;
+}
+
+.editable-input:focus {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+input.form-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+
+/* --- Table Structure & Styles --- */
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.item-table th,
+.item-table td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #000;
+}
+
+.item-table th {
+    background-color: #eee;
+    font-weight: 700;
+}
+
+.item-table input {
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+}
+
+.item-table td:nth-child(2) input,
+.item-table td:nth-child(7) input {
+    text-align: left;
+}
+
+.add-item-zone {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* --- Summary Structure & Styles --- */
+.summary-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    font-size: 15px;
+}
+
+.summary-row {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.total-row {
+    font-weight: 700;
+    font-size: 16px;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+}
+
+.chinese-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    font-weight: 700;
+}
+
+/* --- Notes & Vendor Structure & Styles --- */
+.notes-section {
+    margin-bottom: 2rem;
+    padding: 10px;
+    border: 1px solid #000;
+}
+
+.notes-section h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.notes-section textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.vendor-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    position: relative;
+    page-break-inside: avoid;
+    border: 1px solid #000;
+}
+
+.vendor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.stamp-box {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px dashed #ccc;
+}
+
+.stamp-placeholder {
+    color: #999;
+    font-size: 12px;
+}
+
+.stamp-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- Photos Structure & Styles --- */
+.photos-section {
+    margin-top: 2rem;
+    break-before: auto;
+    page-break-before: auto;
+}
+
+.photo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #000;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.photo-grid[data-count="1"] {
+    display: flex;
+    justify-content: center;
+}
+
+.photo-grid[data-count="1"] .photo-card {
+    width: calc(50% - 10px);
+}
+
+.photo-grid[data-count="3"] {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.photo-card {
+    padding: 10px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1px solid #ddd;
+}
+
+.photo-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.photo-card textarea {
+    font-family: inherit;
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+}
+
+/* --- Modal --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+/* ===========================
+   PRINT STYLES
+   =========================== */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        zoom: var(--print-zoom, 1);
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .page-container {
+        width: 100%;
+        margin: 0;
+        padding: 15mm;
+        box-shadow: none;
+        background: white;
+    }
+
+    /* Hide date picker icon */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none !important;
+        -webkit-appearance: none;
+    }
+
+    /* Hide empty photo section */
+    .photos-section:not(.has-photos) {
+        display: none;
+    }
+
+    /* Ensure grid layouts work in print */
+    .photo-grid {
+        display: grid;
+    }
+
+    .photo-grid[data-count="1"] {
+        display: flex;
+    }
+
+    .editable-input {
+        border-bottom: none;
+    }
+
+    .editable-input::placeholder {
+        color: transparent;
+    }
+
+    .stamp-box {
+        border: none;
+    }
+}

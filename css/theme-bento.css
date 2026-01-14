@@ -1,0 +1,232 @@
+/* Theme: Bento Grid */
+
+:root {
+    --primary-color: #333;
+    --hover-color: #000;
+    --bg-color: #e0e0e0;
+    --paper-bg: #f5f5f7;
+    /* Light gray paper for screen, white for print */
+    --card-bg: #fff;
+    --radius: 16px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --font-main: 'Inter', 'Noto Sans TC', sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: #1d1d1f;
+    font-size: 14px;
+}
+
+.control-panel {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    margin: 10px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.panel-toolbar {
+    background: #f5f5f7;
+    border-radius: 8px;
+}
+
+/* Page as a canvas */
+.page-container {
+    background: var(--paper-bg);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Gap between bento blocks */
+}
+
+/* Bento Blocks - mimicking header, table, etc as cards */
+/* We need to target the sections. Since HTML structure is flat, we style by section/div */
+
+.quotation-header,
+.items-section,
+.summary-section,
+.notes-section,
+.vendor-section,
+.photos-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Header Specifics */
+.quotation-header {
+    border-bottom: none;
+    text-align: left;
+}
+
+input.form-title {
+    font-size: 40px;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+
+.editable-input {
+    background: #f5f5f7;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+}
+
+.editable-input:focus {
+    background: #fff;
+    box-shadow: 0 0 0 2px #007aff;
+}
+
+/* Table */
+.item-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.item-table th {
+    background: #f5f5f7;
+    color: #86868b;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    padding: 12px;
+}
+
+.item-table th:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.item-table th:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+.item-table td {
+    border-bottom: 1px solid #f5f5f7;
+    padding: 12px;
+    border: none;
+}
+
+.item-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Summary */
+.summary-section {
+    align-items: center;
+    /* Center align for card look */
+    background: #1d1d1f;
+    /* Dark card for summary */
+    color: #fff;
+}
+
+.summary-row,
+.total-row,
+.chinese-row {
+    width: 100%;
+    color: #fff;
+    border: none;
+}
+
+.total-row {
+    font-size: 24px;
+    color: #fff;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chinese-row {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Override IDs colors inside summary */
+#val-subtotal,
+#val-tax,
+#val-total,
+#val-total-chinese {
+    color: #fff;
+}
+
+/* Styles for labels inside summary need to be white */
+.summary-section .label {
+    color: #aaa;
+}
+
+/* Notes & Vendor */
+.notes-section,
+.vendor-section {
+    border: none;
+}
+
+.notes-section {
+    background: #fffbe6;
+    /* Sticky note color */
+}
+
+/* Photos */
+.photo-header {
+    border-bottom: none;
+}
+
+.photo-card {
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    padding: 10px;
+}
+
+.photo-card img {
+    border-radius: 8px;
+}
+
+/* Print Overrides */
+@media print {
+
+    body,
+    .page-container {
+        background: white;
+        margin: 0;
+    }
+
+    .page-container {
+        box-shadow: none;
+    }
+
+    /* Remove backgrounds for ink saving, or keep if user wants "Bento" look on paper */
+    .quotation-header,
+    .items-section,
+    .notes-section,
+    .vendor-section,
+    .photos-section {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+    }
+
+    .summary-section {
+        background: #f5f5f7;
+        color: #000;
+        border: 1px solid #ddd;
+    }
+
+    .summary-section .label,
+    #val-subtotal,
+    #val-tax,
+    #val-total,
+    #val-total-chinese {
+        color: #000;
+    }
+
+    .editable-input {
+        background: transparent;
+        padding: 0;
+    }
+}

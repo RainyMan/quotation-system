@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工程承攬報價單系統</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 非列印區：控制面板 -->
+    <div class="no-print control-panel">
+        <div class="panel-header">
+            <h1>工程報價系統</h1>
+            <div class="actions">
+                <button onclick="window.print()" class="btn btn-primary"><i class="fas fa-print"></i> 列印 / 存為
+                    PDF</button>
+                <button id="btn-save" class="btn btn-success"><i class="fas fa-save"></i> 儲存報價單</button>
+                <button id="btn-settings" class="btn btn-secondary"><i class="fas fa-cog"></i> 設定</button>
+            </div>
+        </div>
+        <div class="panel-toolbar">
+            <div class="group">
+                <label>客戶快搜：</label>
+                <input type="text" id="search-customer" placeholder="輸入客戶名稱..." list="customer-list">
+                <datalist id="customer-list"></datalist>
+            </div>
+            <div class="group">
+                <label>廠商切換：</label>
+                <select id="vendor-select">
+                    <option value="">-- 請選擇廠商 --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Print Settings Toolbar -->
+        <div class="panel-toolbar" style="margin-top: 10px; background: #eef2f7;">
+            <div class="group">
+                <label><i class="fas fa-print"></i> 列印縮放：</label>
+                <label><input type="radio" name="print-scale" value="100"> 100%</label>
+                <label><input type="radio" name="print-scale" value="fit" checked> 自動一頁</label>
+                <label><input type="radio" name="print-scale" value="custom"> 自訂 %</label>
+                <input type="number" id="custom-scale-input" value="100" min="50" max="200"
+                    style="width: 60px; display: none;">
+            </div>
+            <div class="group" style="border-left: 1px solid #ccc; padding-left: 1rem; margin-left: 1rem;">
+                <label><i class="fas fa-font"></i> 標題大小：</label>
+                <input type="range" id="title-size-input" min="20" max="60" value="36" style="width: 100px;">
+                <span id="title-size-val">36px</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定 Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>系統設定</h2>
+            <div class="form-group">
+                <label>Google API Key (Optional for Write)</label>
+                <input type="password" id="config-api-key" placeholder="Enter API Key">
+            </div>
+            <div class="form-group">
+                <label>Google Client ID (Required for Write)</label>
+                <input type="text" id="config-client-id" placeholder="Enter Client ID">
+            </div>
+            <div class="form-group">
+                <label>Spreadsheet ID</label>
+                <input type="text" id="config-sheet-id" placeholder="Enter Spreadsheet ID">
+            </div>
+            <button id="btn-save-config" class="btn btn-primary">儲存並連線</button>
+        </div>
+    </div>
+
+    <!-- 報價單主體 (A4 紙張模擬) -->
+    <div class="page-container">
+
+        <!-- 報價單表頭 -->
+        <header class="quotation-header">
+            <input type="text" class="form-title editable-input" value="工程承攬報價單"
+                style="text-align: center; width: 100%;">
+
+            <div class="header-grid">
+                <div class="col-left">
+                    <div class="field-row">
+                        <label>客戶名稱：</label>
+                        <input type="text" id="cust-name" class="editable-input" placeholder="客戶名稱">
+                    </div>
+                    <div class="field-row">
+                        <label>工程名稱：</label>
+                        <input type="text" id="project-name" class="editable-input" placeholder="輸入工程名稱">
+                    </div>
+                    <div class="field-row">
+                        <label>聯 絡 人：</label>
+                        <input type="text" id="cust-contact" class="editable-input" placeholder="聯絡人姓名">
+                    </div>
+                </div>
+                <div class="col-right">
+                    <div class="field-row">
+                        <label>日　　期：</label>
+                        <input type="date" id="quote-date" class="editable-input">
+                    </div>
+                    <div class="field-row">
+                        <label>聯絡電話：</label>
+                        <input type="text" id="cust-phone" class="editable-input" placeholder="電話號碼">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 工程明細表 -->
+        <section class="items-section">
+            <table class="item-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">項次</th>
+                        <th style="width: 35%">工程品項</th>
+                        <th style="width: 8%">單位</th>
+                        <th style="width: 10%">數量</th>
+                        <th style="width: 12%">單價</th>
+                        <th style="width: 12%">總價</th>
+                        <th style="width: 18%">附註</th>
+                        <th class="no-print" style="width: 50px">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="items-body">
+                    <!-- JS 動態生成 -->
+                </tbody>
+            </table>
+            <div class="no-print add-item-zone">
+                <button id="btn-add-item" class="btn btn-outline"><i class="fas fa-plus"></i> 新增項目</button>
+            </div>
+        </section>
+
+        <!-- 金額計算區 -->
+        <section class="summary-section">
+            <div class="summary-row">
+                <span class="label">小計：</span>
+                <span class="value" id="val-subtotal">0</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">稅金 (5%)：</span>
+                <span class="value" id="val-tax">0</span>
+            </div>
+            <div class="summary-row total-row">
+                <span class="label">合計：</span>
+                <span class="value" id="val-total">0</span>
+            </div>
+            <div class="summary-row chinese-row">
+                <span class="label">總價新台幣：</span>
+                <span class="value" id="val-total-chinese">零元整</span>
+            </div>
+        </section>
+
+        <!-- 補充說明 -->
+        <section class="notes-section">
+            <h3>補充說明：</h3>
+            <textarea id="quote-notes" rows="4" placeholder="請輸入補充說明..."></textarea>
+        </section>
+
+        <!-- 廠商資訊 + 蓋章 -->
+        <section class="vendor-section">
+            <div class="vendor-info" id="vendor-info-display">
+                <!-- 預設顯示 -->
+                <p><strong>廠商名稱：</strong><span id="v-name"></span></p>
+                <div class="vendor-grid">
+                    <p><strong>聯絡人：</strong><span id="v-contact"></span></p>
+                    <p><strong>手機：</strong><span id="v-mobile"></span></p>
+                    <p><strong>電話：</strong><span id="v-phone"></span></p>
+                    <p><strong>傳真：</strong><span id="v-fax"></span></p>
+                </div>
+                <p><strong>地址：</strong><span id="v-address"></span></p>
+                <p><strong>Email：</strong><span id="v-email"></span></p>
+            </div>
+            <div class="stamp-box">
+                <img id="vendor-stamp" src="" alt="公司章" class="stamp-img hidden">
+                <div class="stamp-placeholder no-print">蓋章位置</div>
+            </div>
+        </section>
+
+        <!-- 強制分頁 (Print only) - REMOVED based on user request to keep content continuous -->
+        <!-- <div class="page-break"></div> -->
+
+        <!-- 現場照片 -->
+        <section class="photos-section">
+            <div class="photo-header">
+                <h2>📷 現場照片</h2>
+                <button id="btn-browse-photo" class="no-print btn btn-sm"><i class="fas fa-image"></i> 新增照片</button>
+                <input type="file" id="file-input" multiple accept="image/*" style="display: none">
+            </div>
+            <div id="photo-container" class="photo-grid">
+                <!-- 照片卡片動態插入 -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Google API Client -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

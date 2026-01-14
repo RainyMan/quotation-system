@@ -1,0 +1,358 @@
+/* Base Layout & Functional Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+}
+
+/* --- Control Panel (No Print) --- */
+.control-panel {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 2rem;
+    padding: 1rem 2rem;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.panel-toolbar {
+    display: flex;
+    gap: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 12px;
+}
+
+/* --- A4 Page Simulation --- */
+.page-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    position: relative;
+}
+
+/* --- Form Structure --- */
+.quotation-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+
+.header-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-left,
+.col-right {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.field-row {
+    display: flex;
+    align-items: baseline;
+}
+
+.field-row label {
+    min-width: 80px;
+}
+
+.editable-input {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+/* --- Table Structure --- */
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.item-table th,
+.item-table td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.item-table input {
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    background: transparent;
+}
+
+.item-table td:nth-child(2) input,
+.item-table td:nth-child(7) input {
+    text-align: left;
+}
+
+.add-item-zone {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* --- Summary Structure --- */
+.summary-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.summary-row {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.chinese-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+/* --- Notes & Vendor Structure --- */
+.notes-section {
+    margin-bottom: 2rem;
+    padding: 10px;
+}
+
+.notes-section textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    background: transparent;
+}
+
+.vendor-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    position: relative;
+    page-break-inside: avoid;
+}
+
+.vendor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.stamp-box {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.stamp-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- Photos Structure --- */
+.photos-section {
+    margin-top: 2rem;
+    break-before: auto;
+    page-break-before: auto;
+}
+
+.photo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 5px;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.photo-grid[data-count="1"] {
+    display: flex;
+    justify-content: center;
+}
+
+.photo-grid[data-count="1"] .photo-card {
+    width: calc(50% - 10px);
+}
+
+.photo-grid[data-count="3"] {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.photo-card {
+    padding: 10px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.photo-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* --- Modal --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+/* ===========================
+   PRINT STYLES
+   =========================== */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        zoom: var(--print-zoom, 1);
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .page-container {
+        width: 100%;
+        margin: 0;
+        padding: 15mm;
+        box-shadow: none;
+        background: white;
+    }
+
+    /* Hide date picker icon */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none !important;
+        -webkit-appearance: none;
+    }
+
+    /* Hide empty photo section */
+    .photos-section:not(.has-photos) {
+        display: none;
+    }
+
+    /* Ensure grid layouts work in print */
+    .photo-grid {
+        display: grid;
+    }
+
+    .photo-grid[data-count="1"] {
+        display: flex;
+    }
+
+    .editable-input::placeholder {
+        color: transparent;
+    }
+}
