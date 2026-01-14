@@ -514,41 +514,88 @@ const App = {
         // We could also cache full customer details if needed
     },
 
+    async ensureGapiClient() {
+        if (this.isGapiLoaded && gapi.client.sheets) return true;
+        console.log('Waiting for sheets api...');
+        for (let i = 0; i < 20; i++) {
+            if (this.isGapiLoaded && gapi.client.sheets) return true;
+            await new Promise(r => setTimeout(r, 500));
+        }
+        throw new Error('Google API Client 初始化失敗');
+    },
+
     async saveToSheet() {
         if (!this.config.sheetId) return;
 
-        // 1. Prepare Data
-        // Quotation ID: Generate simple one based on date-timestamp
-        const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const qId = 'Q' + dateStr + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-
-        const qRow = [
-            qId,
-            document.getElementById('quote-date').value,
-            document.getElementById('cust-name').value,
-            document.getElementById('project-name').value,
-            document.getElementById('cust-contact').value,
-            document.getElementById('cust-phone').value,
-            this.dom.valTotal.textContent.replace(/,/g, ''),
-            this.dom.vendorSelect.options[this.dom.vendorSelect.selectedIndex]?.text || '',
-            document.getElementById('quote-notes').value
-        ];
-
-        const itemRows = [];
-        const itemTrs = this.dom.itemsBody.querySelectorAll('tr');
-        itemTrs.forEach(tr => {
-            itemRows.push([
-                qId,
-                tr.querySelector('.input-item').value,
-                tr.querySelector('.input-unit').value,
-                tr.querySelector('.input-qty').value,
-                tr.querySelector('.input-price').value,
-                tr.querySelector('.input-row-total').value,
-                tr.querySelector('.input-note').value
-            ]);
-        });
-
         try {
+            await this.ensureGapiClient();
+
+            // Check Auth
+            if (gapi.client.getToken() === null) {
+                await this.handleAuthClick();
+            }
+
+            const custName = document.getElementById('cust-name').value.trim();
+            const custContact = document.getElementById('cust-contact').value.trim();
+            const custPhone = document.getElementById('cust-phone').value.trim();
+
+            if (!custName) {
+                alert('請輸入客戶名稱');
+                return;
+            }
+
+            // 1. Check & Save New Customer
+            if (this.data.customers && !this.data.customers.includes(custName)) {
+                // Append Object: Name, Contact, Phone, Address(Empty)
+                const newCustRow = [custName, custContact, custPhone, ''];
+                await gapi.client.sheets.spreadsheets.values.append({
+                    spreadsheetId: this.config.sheetId,
+                    range: 'Customers!A:A',
+                    valueInputOption: 'USER_ENTERED',
+                    resource: { values: [newCustRow] }
+                });
+                console.log('New customer saved:', custName);
+                // Update Cache
+                this.data.customers.push(custName);
+                const dl = document.getElementById('customer-list');
+                const opt = document.createElement('option');
+                opt.value = custName;
+                dl.appendChild(opt);
+            }
+
+            // 2. Prepare Quotation Data
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const qId = 'Q' + dateStr + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+
+            const qRow = [
+                qId,
+                document.getElementById('quote-date').value,
+                custName,
+                document.getElementById('project-name').value,
+                custContact,
+                custPhone,
+                this.dom.valTotal.textContent.replace(/,/g, ''),
+                this.dom.vendorSelect.options[this.dom.vendorSelect.selectedIndex]?.text || '',
+                document.getElementById('quote-notes').value
+            ];
+
+            const itemRows = [];
+            const itemTrs = this.dom.itemsBody.querySelectorAll('tr');
+            itemTrs.forEach(tr => {
+                // Skip empty rows
+                if (!tr.querySelector('.input-item').value.trim()) return;
+
+                itemRows.push([
+                    qId,
+                    tr.querySelector('.input-item').value,
+                    tr.querySelector('.input-unit').value,
+                    tr.querySelector('.input-qty').value,
+                    tr.querySelector('.input-price').value,
+                    tr.querySelector('.input-row-total').value,
+                    tr.querySelector('.input-note').value
+                ]);
+            });
+
             // Append to Quotations
             await gapi.client.sheets.spreadsheets.values.append({
                 spreadsheetId: this.config.sheetId,
@@ -558,14 +605,16 @@ const App = {
             });
 
             // Append to Quotation_Items
-            await gapi.client.sheets.spreadsheets.values.append({
-                spreadsheetId: this.config.sheetId,
-                range: 'Quotation_Items!A:A',
-                valueInputOption: 'USER_ENTERED',
-                resource: { values: itemRows }
-            });
+            if (itemRows.length > 0) {
+                await gapi.client.sheets.spreadsheets.values.append({
+                    spreadsheetId: this.config.sheetId,
+                    range: 'Quotation_Items!A:A',
+                    valueInputOption: 'USER_ENTERED',
+                    resource: { values: itemRows }
+                });
+            }
 
-            alert(`報價單已儲存！單號：${qId}`);
+            alert(`報價單已儲存！單號：${qId}\n(若為新客戶已自動新增至資料庫)`);
 
         } catch (err) {
             console.error('Save Error:', err);
